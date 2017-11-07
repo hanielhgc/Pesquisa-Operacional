@@ -151,12 +151,56 @@ public class Main {
 			}
 			
 			
+			
+			
 			//cromossomo recebe peças (solução) e o cromossomo é adicionado ao Array de cromossomos
 			cromossomo.setPeçasCrom(peças2);
 			cromossomos.add(cromossomo);
 			
 			
 		
+		}
+		
+		
+
+		//rotacionar o poligono baseado no angulo
+		for (int k = 0; k < cromossomos.size(); k++) {
+			for (int l = 0; l < peças2.size(); l++) {
+				
+			
+		
+			if(cromossomos.get(k).getPeçasCrom().get(l).getRotaçao() == 0){
+				
+			}else{
+				double aux;
+				double aux2;
+				double [] vert = new double[8];
+				double [] ref = new double[2];
+			vert = cromossomos.get(k).getPeçasCrom().get(l).getVertices();
+				aux = vert[6];
+				 aux2 = vert[7];
+				 
+				 vert[6] = vert[4];
+				 vert[7] = vert[5];
+				 
+				 vert[4] = vert[2];
+				 vert[5] = vert[3];
+				 
+				 vert[2] = vert[0];
+				 vert[3] = vert[1];
+				 
+				 vert[0] = aux;
+				 vert[1] = aux2;
+				 
+				 ref[0] = aux;
+				 ref[1] = aux2;
+				 
+				 cromossomos.get(k).getPeçasCrom().get(l).setVertices(vert);
+				 cromossomos.get(k).getPeçasCrom().get(l).setReferencia(ref);
+				 
+			}
+			
+		}
 		}
 		
 	
@@ -211,6 +255,7 @@ public class Main {
 		
 		
 		//fazendo o polígono "caminhar" para a esquerda
+		/*
 		for (int i = (int) vertices[6]; i <= vertices[0]; i++) {
 			int j =(int) (vertices[1] -1);
 			if(matriz[i][j] == 1){
@@ -220,25 +265,152 @@ public class Main {
 					int k2 = (int) (vertices[1] - 1);
 					int count = (int) (vertices[3]);
 					
-					matriz[i][k2] = 1;
+					matriz[i][j] = 1;//matriz[k1][k2] = 1
 					matriz[i][count] = 0;
 					count--;
-				}
+				//}
 			}
 		}
+		*/
+		/*
+		coluna0((int)vertices[4],(int)vertices[5],matriz);
+		coluna1((int)vertices[6],(int)vertices[7],matriz);
+		*/
+		
+		/*
+		int count = 0;
+		while((int)vertices[7] - count > 0){
+			
+			if(checarColuna((int)vertices[6],(int)vertices[7] - count,matriz))
+				break;
+			
+			coluna0((int)vertices[4],(int)vertices[5] - count,matriz);
+			coluna1((int)vertices[6],(int)vertices[7] - count,matriz);
+			count++;
+		}
+		*/
+		
+		bottomLeft(vertices,matriz);
+		
+		
+		
 		
 		
 		//exibindo a matriz
 		 System.out.println("Agora, apresentando a matriz\n\n");
-	        for (int i = 0; i < largura; i++) {
-	            for (int j = 0; j < 10; j++) {
-	                System.out.print(matriz[i][j] + "   ");
-	            }
-	            System.out.println("");
+	     for (int i = 0; i < largura; i++) {
+	        for (int j = 0; j < 10; j++) {
+	        	System.out.print(matriz[i][j] + "   ");
 	        }
-		
-		
+	        System.out.println("");
+	     }
+	        
 		
 	}
+	public static void coluna0(int linha, int coluna, int m[][], int linhaL){
+		for (int i = linha; i <= linhaL ; i++) {
+			m[i][coluna] = 0;
+		}
+	}
+	
+	public static void coluna1(int linha, int coluna, int m[][], int linhaL){
+		for (int i = linha; i <= linhaL ; i++) {
+			m[i][coluna - 1] = 1;
+		}
+	}
+	
+	public static boolean checarColuna(int linha, int coluna, int m[][], int linhaL){
+		boolean a = false;
+		if(coluna - 1 < 0 )
+			return true;
+		for (int i = linha; i <= linhaL ; i++) {
+			if(m[i][coluna - 1] == 0){
+				a = false;
+			}else{
+				a = true;
+				return a;
+			}
+		}
+		return a;
+	}
+	
+	public static void linha0(int linha, int coluna, int m[][], int colunaL){
+		for (int i = coluna; i <= colunaL ; i++) {
+			m[linha][i] = 0;
+		}
+	}
+	
+	public static void linha1(int linha, int coluna, int m[][], int colunaL){
+		for (int i = coluna; i <= colunaL ; i++) {
+			m[linha - 1][i] = 1;
+		}
+	}
+	
+	public static boolean checarLinha(int linha, int coluna, int m[][], int colunaL){
+		boolean a = false;
+		if(linha - 1 < 0 )
+			return true;
+		for(int j = coluna; j <= colunaL; j++){
+			if(m[linha - 1][j] == 0){
+				a = false;
+			}else{
+				a = true;
+				return a;
+			}
+		}
+		return a;
+	}
+	
+	public static void bottomLeft(double v[],int m[][]){
+		int countLeft = 0;
+		int countUp = 0;
 
+		while(
+				checarColuna((int)v[6] - countUp,(int)v[7] - countLeft, m, (int)v[0] - countUp) != true ||
+				checarLinha((int)v[6] - countUp,(int)v[7] - countLeft, m, (int)v[5] - countLeft) != true){
+			while((int)v[7] - countLeft > 0){
+				
+				if(checarColuna((int)v[6] - countUp,(int)v[7] - countLeft,m,(int)v[0] - countUp))
+					break;
+					
+				coluna0((int)v[4] - countUp,(int)v[5] - countLeft,m,(int)v[2] - countUp);
+				coluna1((int)v[6] - countUp,(int)v[7] - countLeft,m,(int)v[0] - countUp);
+				countLeft++;
+
+				imprimirMatriz(5,m);
+			}
+				
+			
+			while((int)v[6] - countUp > 0){
+					
+				if(checarLinha((int)v[6] - countUp,(int)v[7] - countLeft, m, (int)v[5] - countLeft))
+					break;
+					
+				linha0((int)v[0] - countUp,(int)v[1] - countLeft, m, (int)v[3] - countLeft);
+				linha1((int)v[6] - countUp,(int)v[7] - countLeft, m, (int)v[5] - countLeft);
+				countUp++;
+				
+				
+				imprimirMatriz(5,m);	
+				
+			}
+		}
+		
+	}
+	
+	
+	public static void imprimirMatriz(int largura, int m[][]){
+	 System.out.println("Agora, apresentando a matriz\n\n");
+     for (int i = 0; i < largura; i++) {
+        for (int j = 0; j < 10; j++) {
+        	System.out.print(m[i][j] + "   ");
+        }
+        System.out.println("");
+     }
+     System.out.println("--------------------");
+	
+	}
+	
+	
+	
 }
