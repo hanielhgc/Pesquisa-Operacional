@@ -89,6 +89,12 @@ public class Main {
 					//cria uma nova instância de peça com ID único, faz o cálculo da área e a adiciona ao Array
 					Peça p = new Peça(vertices,0, vertices[0], vertices[1],cont);
 					p.setArea(vertices);
+					int aux = (int) Math.random();
+					if(aux%2 == 0){
+						p.setRotaçao(90);
+					}else{
+						p.setRotaçao(0);
+				}
 					peças.add(p);
 					
 					//incrementa o contador de ID
@@ -164,45 +170,40 @@ public class Main {
 		
 
 		//rotacionar o poligono baseado no angulo
-		for (int k = 0; k < cromossomos.size(); k++) {
-			for (int l = 0; l < peças2.size(); l++) {
-				
+		for (int l = 0; l < peças.size(); l++) {
 			
-		
-			if(cromossomos.get(k).getPeçasCrom().get(l).getRotaçao() == 0){
+			
+			
+			if(peças.get(l).getRotaçao() == 0){
 				
 			}else{
 				double aux;
 				double aux2;
 				double [] vert = new double[8];
 				double [] ref = new double[2];
-			vert = cromossomos.get(k).getPeçasCrom().get(l).getVertices();
-				aux = vert[6];
-				 aux2 = vert[7];
+				int base;
+				int altura;
+				
+				
+				
+				vert = peças.get(l).getVertices();
+				
+				base = (int) Math.abs((vert[1]-vert[3]));
+				altura = (int) Math.abs((vert[0]-vert[4]));
+				
+				vert[2] = vert[0];
+				vert[3] = vert[1]+altura;
+				vert[4] = vert[0]-base;
+				vert[5] = vert[1]+altura;
+				vert[6] = vert[0]-base;
+				vert[7] = vert[1];
+						
 				 
-				 vert[6] = vert[4];
-				 vert[7] = vert[5];
-				 
-				 vert[4] = vert[2];
-				 vert[5] = vert[3];
-				 
-				 vert[2] = vert[0];
-				 vert[3] = vert[1];
-				 
-				 vert[0] = aux;
-				 vert[1] = aux2;
-				 
-				 ref[0] = aux;
-				 ref[1] = aux2;
-				 
-				 cromossomos.get(k).getPeçasCrom().get(l).setVertices(vert);
-				 cromossomos.get(k).getPeçasCrom().get(l).setReferencia(ref);
+				 peças.get(l).setVertices(vert);
 				 
 			}
 			
-		}
-		}
-		
+		}	
 	
 		//exibir todas as peças (soluções) de cada cromossomo
 		/*
@@ -290,7 +291,12 @@ public class Main {
 		}
 		*/
 		
+		//pegando os vertices da primeira peça do primeiro cromossomo (colocar isso dentro de um for)
+		ArrayList <Peça> pecinhas = cromossomos.get(0).getPeçasCrom();
+		vertices=pecinhas.get(0).getVertices();
+		
 		bottomLeft(vertices,matriz);
+		
 		
 		
 		
