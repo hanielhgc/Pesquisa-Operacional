@@ -25,6 +25,9 @@ public class Main {
 		double [] vertices = new double[8];
 		int cont = 0;
 		int largura;
+		Cromossomo melhorResultado = new Cromossomo();
+		
+		melhorResultado.setFitness(Integer.MAX_VALUE);
 		
 		
 		//teste do shuffle
@@ -148,8 +151,8 @@ public class Main {
 			
 			//torna a rotação da peça aleatória (se o random for par, a rotação será 90. Se for ímpar, 0)
 			for (int j = 0; j < peças2.size(); j++) {
-				int aux = (int) Math.random();
-				if(aux%2 == 0){
+				double aux = Math.random();
+				if(aux > 0.5){
 					peças2.get(j).setRotaçao(90);
 				}else{
 					peças2.get(j).setRotaçao(0);
@@ -204,6 +207,10 @@ public class Main {
 			}
 			
 		}	
+		
+		
+		
+		
 	
 		//exibir todas as peças (soluções) de cada cromossomo
 		/*
@@ -219,12 +226,12 @@ public class Main {
 			}
 			
 		}
+	*/
 		
-		*/
 		
 		//"desenhando" o polígono na matriz
-		int altura=10;
-		int [][] matriz = new int[largura][altura];
+		int alturaM=10;
+		int [][] matriz = new int[largura][alturaM];
 		
 		vertices = peças.get(0).getVertices();
 		
@@ -292,27 +299,79 @@ public class Main {
 		*/
 		
 		//pegando os vertices da primeira peça do primeiro cromossomo (colocar isso dentro de um for)
-		ArrayList <Peça> pecinhas = cromossomos.get(0).getPeçasCrom();
-		vertices=pecinhas.get(0).getVertices();
-		
-		bottomLeft(vertices,matriz);
 		
 		
+		for (int i = 0; i < cromossomos.size(); i++) {
+			System.out.println(cromossomos.size() + "   " + i);
+			ArrayList <Peça> pecinhas = cromossomos.get(i).getPeçasCrom();
+			
+			for (int j = 0; j < peças.size(); j++) {
+				
+				
+				vertices=pecinhas.get(j).getVertices();
+		
+				
+				bottomLeft(vertices,matriz);
+				
+				// TODO Auto-generated catch block
+		
+			}
+			
+			
+			cromossomos.get(i).setFitness(fitness(matriz));
+			System.out.println("fitness:  "+fitness(matriz));
+			zerarMatriz(matriz);
+		}
+		
+	
+			
 		
 		
 		
 		
+		
+		//obtendo o fitness ***
+		/*
+		int fit=0;
+		for (int j = 0; j < matriz[0].length; j++) {
+		for (int i = 0; i < largura; i++) {
+				if(matriz[i][j] == 1){
+					fit=j;
+				}
+				
+			}
+		}
+		
+		System.out.println("fit: "+fit);
+		*/
+	}
+		
+		
+		/*
 		//exibindo a matriz
 		 System.out.println("Agora, apresentando a matriz\n\n");
 	     for (int i = 0; i < largura; i++) {
-	        for (int j = 0; j < 10; j++) {
+	        for (int j = 0; j < alturaM; j++) {
 	        	System.out.print(matriz[i][j] + "   ");
 	        }
 	        System.out.println("");
+	     
 	     }
+	     */
 	        
-		
+	public static int fitness(int m[][]){
+		int fit=0;
+		for (int j = 0; j < m[0].length; j++) {
+		for (int i = 0; i < m.length; i++) {
+				if(m[i][j] == 1){
+					fit=j;
+				}
+				
+			}
+		}
+		return fit;
 	}
+	
 	public static void coluna0(int linha, int coluna, int m[][], int linhaL){
 		for (int i = linha; i <= linhaL ; i++) {
 			m[i][coluna] = 0;
@@ -397,10 +456,12 @@ public class Main {
 				countUp++;
 				
 				
-				imprimirMatriz(5,m);	
+					
 				
 			}
+			
 		}
+		imprimirMatriz(5,m);
 		
 	}
 	
@@ -415,6 +476,14 @@ public class Main {
      }
      System.out.println("--------------------");
 	
+	}
+	
+	public static void zerarMatriz(int m[][]){
+		for (int i = 0; i < m.length; i++) {
+			for (int j = 0; j < m[i].length; j++) {
+				m[i][j] = 0;
+			}
+		}
 	}
 	
 	
