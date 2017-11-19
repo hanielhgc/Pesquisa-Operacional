@@ -3,7 +3,7 @@ import java.util.Comparator;
 
 import beans.Cromossomo;
 
-class Comparador implements Comparator<Cromossomo> {
+public class Comparador implements Comparator<Cromossomo> {
  
 	
 	//ordem crescente
