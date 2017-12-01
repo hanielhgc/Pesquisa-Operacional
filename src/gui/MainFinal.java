@@ -176,6 +176,11 @@ public class MainFinal {
 					
 				}	
 				}
+				
+				
+				
+				
+				//inserir aqui bottom left e calculo do fitness
 					
 				
 				/*
@@ -269,12 +274,33 @@ public class MainFinal {
 				
 	}
 	
-	public static ArrayList<Peça> Crossover(ArrayList<Peça> peças4){
+	public static Peça buscaId (ArrayList<Peça> ps, int id) {
+		Peça encontrada = new Peça();
 		
+		for (int i = 0; i < ps.size(); i++) {
+			if(ps.get(i).getId() == id){
+				
+				encontrada= ps.get(i);
+			
+			
+			}
+		}
+		return encontrada;
+		
+	}
+	
+	public static ArrayList<Peça> Crossover(ArrayList<Peça> peças4, ArrayList<Peça> peças5){
+		
+		//clonando os pais
 		ArrayList<Peça> peças= (ArrayList<Peça>) peças4.clone();
+		ArrayList<Peça> outraspeças= (ArrayList<Peça>) peças5.clone();
+		
+		
+		//aleatorio que selecionará um ponto do pai e a partir dele será copiado o resto
 		int aleatorio;
 		aleatorio=aleatoriar(0, peças.size());
 		ArrayList<Peça> novaspeças = new ArrayList();
+		ArrayList<Peça> novaspeças2 = new ArrayList();
 		ArrayList<Peça> aux = new ArrayList();
 		
 		for (int i = aleatorio; i < peças.size(); i++) {
@@ -290,14 +316,13 @@ public class MainFinal {
 			
 		}
 		
-		
-		
-		Collections.shuffle(peças);
-		
+	
 		for (int i = 0; i < peças.size(); i++) {
-			novaspeças.add(peças.get(i));
+			novaspeças.add(buscaId(outraspeças, peças.get(i).getId()));
+			
 		}
 		
+				
 		
 		int aleatorio2;
 		aleatorio2=aleatoriar(0, 100);
@@ -373,19 +398,9 @@ public class MainFinal {
 			//cromossomos.get(contador) será reproduzido (array de peças)
 			int aleatorio;
 			aleatorio =aleatoriar(0, cromos.get(contador).getPeçasCrom().size());
-			try {
-				CromPai = cromos.get(contador).clone();
-			} catch (CloneNotSupportedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				
-				
-				
-				
-				
-				
-				
-			}
+			
+				CromPai = (Cromossomo) cromos.get(contador);
+			
 			
 		}
 		return CromPai;
@@ -396,10 +411,168 @@ public class MainFinal {
 	
 	
 
+	
+	
+	public static void bottomLeftPrint(double v[],int m[][]){
+		int countLeft = 0;
+		int countUp = 0;
+
+		while(
+				checarColuna((int)v[6] - countUp,(int)v[7] - countLeft, m, (int)v[0] - countUp) != true ||
+				checarLinha((int)v[6] - countUp,(int)v[7] - countLeft, m, (int)v[5] - countLeft) != true){
+			while((int)v[7] - countLeft > 0){
+				
+				if(checarColuna((int)v[6] - countUp,(int)v[7] - countLeft,m,(int)v[0] - countUp))
+					break;
+					
+				coluna0((int)v[4] - countUp,(int)v[5] - countLeft,m,(int)v[2] - countUp);
+				coluna1((int)v[6] - countUp,(int)v[7] - countLeft,m,(int)v[0] - countUp);
+				countLeft++;
+
+				imprimirMatriz(5,m);
+			}
+				
+			
+			while((int)v[6] - countUp > 0){
+					
+				if(checarLinha((int)v[6] - countUp,(int)v[7] - countLeft, m, (int)v[5] - countLeft))
+					break;
+					
+				linha0((int)v[0] - countUp,(int)v[1] - countLeft, m, (int)v[3] - countLeft);
+				linha1((int)v[6] - countUp,(int)v[7] - countLeft, m, (int)v[5] - countLeft);
+				countUp++;
+				
+				
+					
+				
+			}
+			
+		}
+		imprimirMatriz(5,m);
+		
+	}
+	
 	public static int aleatoriar(int minimo, int maximo) {
 	    Random random = new Random();
 	    return random.nextInt((maximo - minimo) + 1) + minimo;
 	}
+	
+	public static void coluna0(int linha, int coluna, int m[][], int linhaL){
+		for (int i = linha; i <= linhaL ; i++) {
+			m[i][coluna] = 0;
+		}
+	}
+	
+	public static void coluna1(int linha, int coluna, int m[][], int linhaL){
+		for (int i = linha; i <= linhaL ; i++) {
+			m[i][coluna - 1] = 1;
+		}
+	}
+	
+	public static boolean checarColuna(int linha, int coluna, int m[][], int linhaL){
+		boolean a = false;
+		if(coluna - 1 < 0 )
+			return true;
+		for (int i = linha; i <= linhaL ; i++) {
+			if(m[i][coluna - 1] == 0){
+				a = false;
+			}else{
+				a = true;
+				return a;
+			}
+		}
+		return a;
+	}
+	
+	public static void linha0(int linha, int coluna, int m[][], int colunaL){
+		for (int i = coluna; i <= colunaL ; i++) {
+			m[linha][i] = 0;
+		}
+	}
+	
+	public static void linha1(int linha, int coluna, int m[][], int colunaL){
+		for (int i = coluna; i <= colunaL ; i++) {
+			m[linha - 1][i] = 1;
+		}
+	}
+	
+	public static boolean checarLinha(int linha, int coluna, int m[][], int colunaL){
+		boolean a = false;
+		if(linha - 1 < 0 )
+			return true;
+		for(int j = coluna; j <= colunaL; j++){
+			if(m[linha - 1][j] == 0){
+				a = false;
+			}else{
+				a = true;
+				return a;
+			}
+		}
+		return a;
+	}
+	
+	public static void bottomLeft(double v[],int m[][]){
+		int countLeft = 0;
+		int countUp = 0;
+
+		while(
+				checarColuna((int)v[6] - countUp,(int)v[7] - countLeft, m, (int)v[0] - countUp) != true ||
+				checarLinha((int)v[6] - countUp,(int)v[7] - countLeft, m, (int)v[5] - countLeft) != true){
+			while((int)v[7] - countLeft > 0){
+				
+				if(checarColuna((int)v[6] - countUp,(int)v[7] - countLeft,m,(int)v[0] - countUp))
+					break;
+					
+				coluna0((int)v[4] - countUp,(int)v[5] - countLeft,m,(int)v[2] - countUp);
+				coluna1((int)v[6] - countUp,(int)v[7] - countLeft,m,(int)v[0] - countUp);
+				countLeft++;
+
+		//		imprimirMatriz(5,m);
+			}
+				
+			
+			while((int)v[6] - countUp > 0){
+					
+				if(checarLinha((int)v[6] - countUp,(int)v[7] - countLeft, m, (int)v[5] - countLeft))
+					break;
+					
+				linha0((int)v[0] - countUp,(int)v[1] - countLeft, m, (int)v[3] - countLeft);
+				linha1((int)v[6] - countUp,(int)v[7] - countLeft, m, (int)v[5] - countLeft);
+				countUp++;
+				
+				
+					
+				
+			}
+			
+		}
+//		imprimirMatriz(5,m);
+		
+	}
+	
+	
+	public static void imprimirMatriz(int largura, int m[][]){
+	 System.out.println("Agora, apresentando a matriz\n\n");
+     for (int i = 0; i < largura; i++) {
+        for (int j = 0; j < 10; j++) {
+        	System.out.print(m[i][j] + "   ");
+        }
+        System.out.println("");
+     }
+     System.out.println("--------------------");
+	
+	}
+	
+	public static void zerarMatriz(int m[][]){
+		for (int i = 0; i < m.length; i++) {
+			for (int j = 0; j < m[i].length; j++) {
+				m[i][j] = 0;
+			}
+		}
+	}
+
+	
+	
 	
 }
 
