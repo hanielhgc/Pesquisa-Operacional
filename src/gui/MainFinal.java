@@ -11,7 +11,7 @@ import comparators.Comparador;
 
 public class MainFinal {
 
-	public static void main(String[] args) {
+public static void main(String[] args) {
 		
 		Scanner scanner = new Scanner(System.in);
 		
@@ -55,10 +55,10 @@ public class MainFinal {
 				vertices[7]=scanner.nextDouble();
 				
 				
-				//for para criar o número de peças fornecido pelo usuário
+				//for para criar o nçmero de peças fornecido pelo usuçrio
 				for (int i = 0; i < qtde; i++) {
 					
-					//cria uma nova instância de peça com ID único, faz o cálculo da área e a adiciona ao Array
+					//cria uma nova instçncia de peça com ID çnico, faz o cçlculo da çrea e a adiciona ao Array
 					Peça p = new Peça(vertices,90, vertices[0], vertices[1],cont);
 					p.setArea(vertices);
 					p.setRotaçao(90);
@@ -79,7 +79,7 @@ public class MainFinal {
 		
 		ArrayList <Peça> peças2 = new ArrayList<>(); 
 
-		//clone do Array que não modifica o Array original
+		//clone do Array que nço modifica o Array original
 		peças2 = (ArrayList<Peça>)peças.clone();
 		
 		//embaralhando as peças do array
@@ -90,11 +90,11 @@ public class MainFinal {
 			System.out.println(peças2.get(i).getId());
 		}
 		
-		//Array de cromossomos. Cromossomo = conjunto de peças em uma ordem que resulta em uma solução
+		//Array de cromossomos. Cromossomo = conjunto de peças em uma ordem que resulta em uma soluçço
 				ArrayList<Cromossomo> cromossomos = new ArrayList<>();
 				
 				
-				//cria 80 (população) cromossomos diferentes de ordem randômica
+				//cria 80 (populaçço) cromossomos diferentes de ordem randçmica
 				for (int i = 0; i < populacao; i++) {
 				
 					Cromossomo cromossomo = new Cromossomo();
@@ -102,7 +102,7 @@ public class MainFinal {
 					Collections.shuffle(peças2);
 					
 					
-					//torna a rotação da peça aleatória (se o random for par, a rotação será 90. Se for ímpar, 0)
+					//torna a rotaçço da peça aleatçria (se o random for par, a rotaçço serç 90. Se for çmpar, 0)
 					for (int j = 0; j < peças2.size(); j++) {
 						double aux = Math.random();
 						if(aux > 0.5){
@@ -115,7 +115,7 @@ public class MainFinal {
 					
 					
 					
-					//cromossomo recebe peças (solução) e o cromossomo é adicionado ao Array de cromossomos
+					//cromossomo recebe peças (soluçço) e o cromossomo ç adicionado ao Array de cromossomos
 					cromossomo.setPeçasCrom(peças2);
 					//recebendo fitness
 					cromossomo.setFitness(aleatoriar(5, 7));
@@ -176,11 +176,6 @@ public class MainFinal {
 					
 				}	
 				}
-				
-				
-				
-				
-				//inserir aqui bottom left e calculo do fitness
 					
 				
 				/*
@@ -205,8 +200,6 @@ public class MainFinal {
 				ArrayList<Cromossomo> maes = new ArrayList();
 				
 				
-				ArrayList<Cromossomo> paisFinais = new ArrayList();
-				
 				int acum = 0;
 				while (acum < 40) {
 					
@@ -214,7 +207,6 @@ public class MainFinal {
 						
 						pais.add(roleta(cromossomos, populacao));
 						maes.add(roleta(cromossomos, populacao));
-						paisFinais.add(roleta(cromossomos, populacao));
 						
 					}
 					
@@ -222,21 +214,21 @@ public class MainFinal {
 					for (int i = 0; i < pais.size(); i++) {
 						
 						//pais viram filhos
-						paisFinais.get(i).setPeçasCrom(Crossover(pais.get(i).getPeçasCrom(), maes.get(i).getPeçasCrom()));
+						pais.get(i).setPeçasCrom(Crossover(pais.get(i).getPeçasCrom(), maes.get(i).getPeçasCrom()));
 						
 						//aqui precisa ser mudado quando encontrar o metodo para obter o fitness
-						paisFinais.get(i).setFitness(aleatoriar(5,7));
+						pais.get(i).setFitness(aleatoriar(5,7));
 						
 					}
 					
 					
-					for (int i = 0; i < paisFinais.size(); i++) {
+					for (int i = 0; i < pais.size(); i++) {
 						
-						cromossomos.add(paisFinais.get(i));
+						cromossomos.add(pais.get(i));
 						
 					}
 					
-					//limpar a população
+					//limpar a populaçço
 					
 					Collections.sort(cromossomos, new Comparador());
 					
@@ -258,7 +250,7 @@ public class MainFinal {
 					
 					
 					
-					//condição que afeta o while
+					//condiçço que afeta o while
 					if(melhorMudou==true){
 						melhorMudou=false;
 						acum=0;
@@ -294,7 +286,7 @@ public class MainFinal {
 		
 	}
 	
-	public static ArrayList<Peça> Crossover(ArrayList<Peça> peças4, ArrayList<Peça> peças5){
+public static ArrayList<Peça> Crossover(ArrayList<Peça> peças4, ArrayList<Peça> peças5){
 		
 		//clonando os pais
 		ArrayList<Peça> peças= (ArrayList<Peça>) peças4.clone();
@@ -399,13 +391,23 @@ public class MainFinal {
 				}
 			}
 			
-			//aqui ó
-			//cromossomos.get(contador) será reproduzido (array de peças)
+			//aqui ç
+			//cromossomos.get(contador) serç reproduzido (array de peças)
 			int aleatorio;
 			aleatorio =aleatoriar(0, cromos.get(contador).getPeçasCrom().size());
-			
-				CromPai = (Cromossomo) cromos.get(contador);
-			
+			try {
+				CromPai = cromos.get(contador).clone();
+			} catch (CloneNotSupportedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				
+				
+				
+				
+				
+				
+				
+			}
 			
 		}
 		return CromPai;
@@ -416,169 +418,9 @@ public class MainFinal {
 	
 	
 
-	
-	
-	public static void bottomLeftPrint(double v[],int m[][]){
-		int countLeft = 0;
-		int countUp = 0;
-
-		while(
-				checarColuna((int)v[6] - countUp,(int)v[7] - countLeft, m, (int)v[0] - countUp) != true ||
-				checarLinha((int)v[6] - countUp,(int)v[7] - countLeft, m, (int)v[5] - countLeft) != true){
-			while((int)v[7] - countLeft > 0){
-				
-				if(checarColuna((int)v[6] - countUp,(int)v[7] - countLeft,m,(int)v[0] - countUp))
-					break;
-					
-				coluna0((int)v[4] - countUp,(int)v[5] - countLeft,m,(int)v[2] - countUp);
-				coluna1((int)v[6] - countUp,(int)v[7] - countLeft,m,(int)v[0] - countUp);
-				countLeft++;
-
-				imprimirMatriz(5,m);
-			}
-				
-			
-			while((int)v[6] - countUp > 0){
-					
-				if(checarLinha((int)v[6] - countUp,(int)v[7] - countLeft, m, (int)v[5] - countLeft))
-					break;
-					
-				linha0((int)v[0] - countUp,(int)v[1] - countLeft, m, (int)v[3] - countLeft);
-				linha1((int)v[6] - countUp,(int)v[7] - countLeft, m, (int)v[5] - countLeft);
-				countUp++;
-				
-				
-					
-				
-			}
-			
-		}
-		imprimirMatriz(5,m);
-		
-	}
-	
 	public static int aleatoriar(int minimo, int maximo) {
 	    Random random = new Random();
 	    return random.nextInt((maximo - minimo) + 1) + minimo;
 	}
 	
-	public static void coluna0(int linha, int coluna, int m[][], int linhaL){
-		for (int i = linha; i <= linhaL ; i++) {
-			m[i][coluna] = 0;
-		}
-	}
-	
-	public static void coluna1(int linha, int coluna, int m[][], int linhaL){
-		for (int i = linha; i <= linhaL ; i++) {
-			m[i][coluna - 1] = 1;
-		}
-	}
-	
-	public static boolean checarColuna(int linha, int coluna, int m[][], int linhaL){
-		boolean a = false;
-		if(coluna - 1 < 0 )
-			return true;
-		for (int i = linha; i <= linhaL ; i++) {
-			if(m[i][coluna - 1] == 0){
-				a = false;
-			}else{
-				a = true;
-				return a;
-			}
-		}
-		return a;
-	}
-	
-	public static void linha0(int linha, int coluna, int m[][], int colunaL){
-		for (int i = coluna; i <= colunaL ; i++) {
-			m[linha][i] = 0;
-		}
-	}
-	
-	public static void linha1(int linha, int coluna, int m[][], int colunaL){
-		for (int i = coluna; i <= colunaL ; i++) {
-			m[linha - 1][i] = 1;
-		}
-	}
-	
-	public static boolean checarLinha(int linha, int coluna, int m[][], int colunaL){
-		boolean a = false;
-		if(linha - 1 < 0 )
-			return true;
-		for(int j = coluna; j <= colunaL; j++){
-			if(m[linha - 1][j] == 0){
-				a = false;
-			}else{
-				a = true;
-				return a;
-			}
-		}
-		return a;
-	}
-	
-	public static void bottomLeft(double v[],int m[][]){
-		int countLeft = 0;
-		int countUp = 0;
-
-		while(
-				checarColuna((int)v[6] - countUp,(int)v[7] - countLeft, m, (int)v[0] - countUp) != true ||
-				checarLinha((int)v[6] - countUp,(int)v[7] - countLeft, m, (int)v[5] - countLeft) != true){
-			while((int)v[7] - countLeft > 0){
-				
-				if(checarColuna((int)v[6] - countUp,(int)v[7] - countLeft,m,(int)v[0] - countUp))
-					break;
-					
-				coluna0((int)v[4] - countUp,(int)v[5] - countLeft,m,(int)v[2] - countUp);
-				coluna1((int)v[6] - countUp,(int)v[7] - countLeft,m,(int)v[0] - countUp);
-				countLeft++;
-
-		//		imprimirMatriz(5,m);
-			}
-				
-			
-			while((int)v[6] - countUp > 0){
-					
-				if(checarLinha((int)v[6] - countUp,(int)v[7] - countLeft, m, (int)v[5] - countLeft))
-					break;
-					
-				linha0((int)v[0] - countUp,(int)v[1] - countLeft, m, (int)v[3] - countLeft);
-				linha1((int)v[6] - countUp,(int)v[7] - countLeft, m, (int)v[5] - countLeft);
-				countUp++;
-				
-				
-					
-				
-			}
-			
-		}
-//		imprimirMatriz(5,m);
-		
-	}
-	
-	
-	public static void imprimirMatriz(int largura, int m[][]){
-	 System.out.println("Agora, apresentando a matriz\n\n");
-     for (int i = 0; i < largura; i++) {
-        for (int j = 0; j < 10; j++) {
-        	System.out.print(m[i][j] + "   ");
-        }
-        System.out.println("");
-     }
-     System.out.println("--------------------");
-	
-	}
-	
-	public static void zerarMatriz(int m[][]){
-		for (int i = 0; i < m.length; i++) {
-			for (int j = 0; j < m[i].length; j++) {
-				m[i][j] = 0;
-			}
-		}
-	}
-
-	
-	
-	
 }
-
-
