@@ -202,7 +202,10 @@ public class MainFinal {
 				*/
 				
 				ArrayList<Cromossomo> pais = new ArrayList();
+				ArrayList<Cromossomo> maes = new ArrayList();
 				
+				
+				ArrayList<Cromossomo> paisFinais = new ArrayList();
 				
 				int acum = 0;
 				while (acum < 40) {
@@ -210,6 +213,7 @@ public class MainFinal {
 					for (int i = 0; i < populacao/2; i++) {
 						
 						pais.add(roleta(cromossomos, populacao));
+						maes.add(roleta(cromossomos, populacao));
 						
 					}
 					
@@ -217,17 +221,17 @@ public class MainFinal {
 					for (int i = 0; i < pais.size(); i++) {
 						
 						//pais viram filhos
-						pais.get(i).setPeçasCrom(Crossover(pais.get(i).getPeçasCrom()));
+						paisFinais.get(i).setPeçasCrom(Crossover(pais.get(i).getPeçasCrom(), maes.get(i).getPeçasCrom()));
 						
 						//aqui precisa ser mudado quando encontrar o metodo para obter o fitness
-						pais.get(i).setFitness(aleatoriar(5,7));
+						paisFinais.get(i).setFitness(aleatoriar(5,7));
 						
 					}
 					
 					
-					for (int i = 0; i < pais.size(); i++) {
+					for (int i = 0; i < paisFinais.size(); i++) {
 						
-						cromossomos.add(pais.get(i));
+						cromossomos.add(paisFinais.get(i));
 						
 					}
 					
