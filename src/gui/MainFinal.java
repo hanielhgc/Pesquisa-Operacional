@@ -214,6 +214,7 @@ public class MainFinal {
 						
 						pais.add(roleta(cromossomos, populacao));
 						maes.add(roleta(cromossomos, populacao));
+						paisFinais.add(roleta(cromossomos, populacao));
 						
 					}
 					
